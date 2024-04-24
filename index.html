@@ -21,11 +21,54 @@
     const ctx = canvas.getContext("2d")
 
 
-    canvas.width = 440
+    canvas.width = 448
     canvas.height = 400
 
-    function draw () {
-        console.log('Hola');
-        window.requestAnimationFrame(draw)
+    //VARIABLE DE LA PELOTA
+    const ballRadius = 3;
+    // posicion de la pelota
+    let x = canvas.width / 2
+    let y = canvas.height - 30
+    // velocidad de la pelota
+    let dx = -3
+    let dy = -3
+
+    function drawBall() {
+    ctx.beginPath() // iniciar el trazado
+    ctx.arc(x, y, ballRadius, 0, Math.PI * 2)
+    ctx.fillStyle = '#fff'
+    ctx.fill()
+    ctx.closePath() // terminar el trazado
     }
+    
+    
+    function drawPaddle() {}
+    function drawBricks() {}
+    function collisionDetection(){}
+    function ballMovement () {
+        x += dx
+        y += dy
+    }
+
+    function cleanCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+    }
+    function paddleMovement(){}
+
+    function draw () {
+        cleanCanvas()
+        window.requestAnimationFrame(draw)
+        //Elementos
+        drawBall()
+        drawPaddle()
+        drawBricks()
+        //drawStore()
+
+        //colisiones y movimientos
+        collisionDetection()
+        ballMovement()
+        paddleMovement()
+    }
+
+    draw()
 </script>
