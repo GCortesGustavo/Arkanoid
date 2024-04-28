@@ -95,7 +95,6 @@
     ctx.closePath() // terminar el trazado
     }
     
-    
     function drawPaddle() {
         ctx.drawImage(
             $sprite, //image
@@ -156,7 +155,27 @@
         }
     }
 
-    function collisionDetection(){}
+    function collisionDetection(){
+        for (let c = 0; c < brickColumnCount; c++) {
+            for (let r = 0; r < brickRowCount; r++) {
+                const currentBrick = bricks[c][r]
+                if (currentBrick.status === BRICK_STATUS.DESTROYED) continue;
+
+                const isBallSameXAsBrick = 
+                x > currentBrick.x && 
+                x < currentBrick.x + brickWidth;
+
+                const isBallSameYAsBrick = 
+                y > currentBrick.y && 
+                y < currentBrick.y + brickHeight;     
+
+                if(isBallSameXAsBrick && isBallSameYAsBrick) {
+                    dy = -dy
+                    currentBrick.status = BRICK_STATUS.DESTROYED
+                }
+            }
+        }        
+    }
 
     function ballMovement () {
         //rebotar las pelotas en los laterales
