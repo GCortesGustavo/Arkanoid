@@ -10,17 +10,23 @@
         display: block;
         margin: 0 auto;
         border-bottom: transparent;
-        background: #000;
+        background: url("./bkg.png") repeat;
     }
 </style>
 
 <canvas></canvas>
+
+<img hidden id="sprite" src="./sprite.png" alt="Sprite Arkanoid"/>
+<img hidden id="bricks" src="./bricks.png" alt="Sprite Bricks Arkanoid"/>
+
 
 <script>
     const canvas = document.querySelector("canvas")
     const ctx = canvas.getContext("2d")
 
 
+    const $sprite = document.querySelector("#sprite")
+    const $bricks = document.querySelector("#bricks")
     canvas.width = 448
     canvas.height = 400
 
@@ -56,12 +62,16 @@
     
     
     function drawPaddle() {
-        ctx.fillStyle = "#09f"
-        ctx.fillRect(
-            paddleX,
-            paddleY,
-            paddleWidth,
-            paddleHeight
+        ctx.drawImage(
+            $sprite, //image
+            29, //coordenadas de recorte
+            174, //coordenadas de recorte
+            paddleWidth, //tamaño del recorte
+            paddleHeight, //tamaño del recorte
+            paddleX,// posicion x del dibujo
+            paddleY, // posicion y del dibujo
+            paddleWidth, //ancho del dibujo
+            paddleHeight, //ancho del dibujo
         )
     }
 
@@ -103,8 +113,19 @@
             dy = -dy
         }
 
-        //Si perdemos
-        if(y + dy > canvas.height - ballRadius) {
+        //Si la pelota toca la pala
+
+        const isBallSameXAsPaddle = 
+            x > paddleX && 
+            x < paddleX + paddleWidth;
+
+        const isBallTouchingPaddle = 
+            y + dy > paddleY - ballRadius &&
+            isBallSameXAsPaddle
+
+        if(isBallSameXAsPaddle && isBallTouchingPaddle ) {
+            dy = -dy
+        } else if(y + dy > canvas.height - ballRadius) {
             console.log("Game Over");
             document.location.reload()
         }
